@@ -1,0 +1,9 @@
+###1
+POST http://localhost:8000/board-service/boards/comments
+content-type: application/json
+
+{
+  "boardId": "4028b9f48dbc3545018dbc4a1f230003",
+  "writer": "ccc",
+  "comment": "good"
+}
