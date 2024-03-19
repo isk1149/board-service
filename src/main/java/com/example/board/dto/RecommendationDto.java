@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CommentInsertDto {
-    private String writer;
-    private String comment;
+public class RecommendationDto {
+    private int value;
 }

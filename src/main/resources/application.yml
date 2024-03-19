@@ -6,11 +6,15 @@ spring:
     name: board-service
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         # show_sql: true
         format_sql: true
+        use_sql_comments: true
+  devtools:
+    livereload:
+      enabled: true
 logging.level:
   org.hibernate.SQL: debug
 

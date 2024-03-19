@@ -1,5 +1,7 @@
 package com.example.board.entity;
 
+import com.example.board.dto.BoardUpdateDto;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -13,46 +15,32 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @Entity
-@Table(name = "BOARD", indexes = {@Index(name = "idx_board_writer", columnList = "writer"),
-                                  @Index(name = "idx_board_sequence_number", columnList = "sequenceNumber")})
+@Table(name = "BOARD")
 public class BoardEntity extends BaseEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(nullable = false, updatable = false, unique = true)
-    private Long sequenceNumber;
-
-    @Column(nullable = false)
-    private String writer;
-
-    @Column(nullable = false)
-    private String subject;
-
-    @Lob
-    @Column(nullable = false)
-    private String content;
-
-    private Long viewCount;
-    private Long recommendationCount;
-
     @OneToMany(mappedBy = "board")
-    private List<CommentEntity> comments = new ArrayList<>();
+    private List<PostEntity> posts = new ArrayList<>();
 
-    public void increaseViewCount() {
-        ++viewCount;
+    @Column(nullable = false)
+    private String boardName;
+
+    @Column(nullable = false)
+    private String description;
+
+    public void updateBoard(final BoardUpdateDto boardUpdateDto) {
+        if (StringUtils.isNotBlank(boardUpdateDto.getBoardName()))
+            this.boardName = boardUpdateDto.getBoardName();
+        if (StringUtils.isNotBlank(boardUpdateDto.getDescription())) {
+            this.description = boardUpdateDto.getDescription();
+        }
     }
 
-    public void increaseRecommendationCount() {
-        ++recommendationCount;
+    public void updateUpdater(String userId) {
+        super.setUpdater(userId);
     }
 
-    public void decreaseRecommendationCount() {
-        --recommendationCount;
-    }
-
-    public void delete() {
-        setDeletionYesOrNo("1");
-    }
 }

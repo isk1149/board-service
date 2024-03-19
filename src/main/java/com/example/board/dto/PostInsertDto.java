@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CommentInsertDto {
+public class PostInsertDto {
+    //TODO - validation
     private String writer;
-    private String comment;
+    private String subject;
+    private String content;
 }

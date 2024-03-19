@@ -1,12 +1,10 @@
 package com.example.board.service;
 
 import com.example.board.dto.CommentInsertDto;
-import com.example.board.dto.CommentUpdateDto;
-import com.example.board.entity.BoardEntity;
+import com.example.board.dto.RecommendationDto;
 import com.example.board.entity.CommentEntity;
-import com.example.board.entity.CommentSequenceNumberEntity;
+import com.example.board.entity.PostEntity;
 import com.example.board.repository.CommentRepository;
-import com.example.board.repository.CommentSequenceNumberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,23 +17,11 @@ import javax.persistence.EntityNotFoundException;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
-    private final CommentSequenceNumberRepository commentSequenceNumberRepository;
 
     @Override
-    public CommentEntity getComment(String id) {
-        CommentEntity entity = commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + id));
-        return entity;
-    }
-
-    @Override
-    public CommentEntity comment(CommentInsertDto commentInsertDto, BoardEntity boardEntity) {
-        CommentSequenceNumberEntity commentSequenceNumberEntity = new CommentSequenceNumberEntity();
-        CommentSequenceNumberEntity savedCommentSequenceNumberRepository = commentSequenceNumberRepository.save(commentSequenceNumberEntity);
-
+    public CommentEntity comment(CommentInsertDto commentInsertDto, PostEntity postEntity) {
         CommentEntity entity = CommentEntity.builder()
-                .sequenceNumber(savedCommentSequenceNumberRepository.getSequenceNumber())
-                .board(boardEntity)
+                .post(postEntity)
                 .writer(commentInsertDto.getWriter())
                 .comment(commentInsertDto.getComment())
                 .recommendationCount(0L)
@@ -46,24 +32,31 @@ public class CommentServiceImpl implements CommentService {
         return savedEntity;
     }
 
+    @Override
+    public CommentEntity getComment(String commentId) {
+        CommentEntity entity = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentId));
+        return entity;
+    }
+
     @Transactional
     @Override
-    public void delete(String id) {
-        CommentEntity entity = commentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + id));
+    public void delete(String commentId) {
+        CommentEntity entity = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentId));
         commentRepository.delete(entity);
     }
 
     @Override
-    public CommentEntity recommend(CommentUpdateDto commentUpdateDto) {
-        CommentEntity entity = commentRepository.findById(commentUpdateDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentUpdateDto.getId()));
+    public Long recommend(String commentId, RecommendationDto recommendationAction) {
+        CommentEntity entity = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentId));
 
-        if (commentUpdateDto.getRecommendationCount() > 0)
+        if (recommendationAction.getValue() > 0)
             entity.increaseRecommendationCount();
         else
             entity.decreaseRecommendationCount();
 
-        return entity;
+        return entity.getRecommendationCount();
     }
 }

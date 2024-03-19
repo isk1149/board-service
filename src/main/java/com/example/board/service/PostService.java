@@ -1,0 +1,22 @@
+package com.example.board.service;
+
+import com.example.board.dto.PostInsertDto;
+import com.example.board.dto.PostUpdateDto;
+import com.example.board.dto.RecommendationDto;
+import com.example.board.entity.PostEntity;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+public interface PostService {
+    PostEntity post(String boardId, PostInsertDto postInsertDto);
+    Page<PostEntity> getPostsInBoard(String boardId, int page, int size);
+    List<PostEntity> getPostsForHome(String boardId);
+    PostEntity getPost(String postId);
+//    PostEntity getPostForComment(String postId);
+    List<PostEntity> getPostsByWriter(String writer);
+
+    PostEntity update(String postId, PostUpdateDto postUpdateDto, String userId);
+    PostEntity recommend(String postId, RecommendationDto recommendationDto);
+    void delete(String postId, String userId);
+}

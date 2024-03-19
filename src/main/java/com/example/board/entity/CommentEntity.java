@@ -5,7 +5,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +12,16 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @Entity
-@Table(name = "COMMENT", indexes = {@Index(name = "idx_comment_writer", columnList = "writer"),
-                                    @Index(name = "idx_comment_sequence_number", columnList = "sequenceNumber")})
+@Table(name = "COMMENT", indexes = {@Index(name = "idx_comment_writer", columnList = "writer")})
 public class CommentEntity extends BaseEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(nullable = false, updatable = false, unique = true)
-    private Long sequenceNumber;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn //default: 필드명 + _ + 참조하는 테이블의 기본 키 컬럼명
+    private PostEntity post;
 
     @Column(nullable = false)
     private String writer;
@@ -32,10 +31,6 @@ public class CommentEntity extends BaseEntity {
     private String comment;
 
     private Long recommendationCount;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn //default: 필드명 + _ + 참조하는 테이블의 기본 키 컬럼명
-    private BoardEntity board;
 
     @ManyToOne
     @JoinColumn(name = "PARENT_COMMENT_ID", referencedColumnName = "ID")
@@ -49,6 +44,11 @@ public class CommentEntity extends BaseEntity {
     }
 
     public void decreaseRecommendationCount() {
-        --recommendationCount;
+        if (recommendationCount > 0)
+            --recommendationCount;
+    }
+
+    public void updateUpdater(String userId) {
+        super.setUpdater(userId);
     }
 }

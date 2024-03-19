@@ -1,0 +1,49 @@
+###POST1
+POST http://localhost:8000/board-service/boards/7b451b7e6cbe41e282f2d499c4fe2fcf/posts
+Content-Type: application/json
+
+{
+  "writer": "kim",
+  "subject": "bad news",
+  "content": "정부가 양자·인공지능(AI)과 첨단 바이오를 ''3대 게임체인저''로 지정하고, 성과 창출을 본격화한다.\r\n AI를 활용해 국민 삶의 질을 향상하는 사업에는 7천억원 넘는 돈을 투자한다.\r\n 양자인터넷 전송 거리를 연말까지 지금의 1천배(100㎞)로 늘리고, 과학기술의학전문대학원 신설도 추진한다."
+}
+
+###GET1
+GET http://localhost:8000/board-service/boards/4028b9f48df4f43d018df4f543600000/posts
+
+###GET2
+GET http://localhost:8000/board-service/posts/writer/kim
+
+###GET3
+GET http://localhost:8000/board-service/posts/839ecf660f9a41038969fdc04f3d51bd
+
+###GET4
+GET http://127.0.0.1:8000/board-service/boards/7b9a7c55a9334d049e8a880cf216e28e/posts/home
+
+###GET5
+GET http://127.0.0.1:8000/board-service/boards/7b9a7c55a9334d049e8a880cf216e28e/posts
+###GET5
+GET http://127.0.0.1:8000/board-service/boards/7b9a7c55a9334d049e8a880cf216e28e/posts?page=1&size=3
+
+###PATCH1
+PATCH http://localhost:8000/board-service/posts/4028b9f48df4f43d018df4f692920001
+content-type: application/json
+
+{
+  "writer": "kim",
+  "subject": "good news",
+  "content": "대한민국파이팅"
+}
+
+###PATCH2
+PATCH http://localhost:8000/board-service/posts/4028b9f48df4f43d018df4f692920001/recommendation
+Content-Type: application/json
+
+{
+  "value": -1
+}
+
+###DELETE1
+DELETE http://localhost:8000/board-service/posts/4028b9f48df4f43d018df4f692920001
+
+

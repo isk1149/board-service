@@ -5,8 +5,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class BoardInsertDto {
-    //TODO - validation
-    private String writer;
-    private String subject;
-    private String content;
+    private String boardName;
+    private String description;
 }

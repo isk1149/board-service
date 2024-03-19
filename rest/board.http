@@ -1,0 +1,35 @@
+###POST1
+POST http://127.0.0.1:8000/board-service/boards
+content-type: application/json
+
+{
+  "boardName": "Sales",
+  "description": "Sales 게시판"
+}
+
+###GET1
+GET http://127.0.0.1:8000/board-service/boards
+
+###GET2
+GET http://127.0.0.1:8000/board-service/home
+
+###GET3
+GET http://127.0.0.1:59003/home
+
+###GET4
+GET http://127.0.0.1:8000/board-service/uuid
+
+###GET5
+GET http://127.0.0.1:8000/board-service/boards/7b9a7c55a9334d049e8a880cf216e28e
+
+###PATCH1
+PATCH http://127.0.0.1:8000/board-service/boards/4028b9f48defbb83018defbce04c0000
+content-type: application/json
+
+{
+  "boardName": "Export Sales",
+  "description": "Export Sales 게시판"
+}
+
+###DELETE1
+DELETE http://127.0.0.1:8000/board-service/boards/4028b9f48df49bec018df49eff540000
