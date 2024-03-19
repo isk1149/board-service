@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.dto.PostDto;
 import com.example.board.dto.PostInsertDto;
 import com.example.board.dto.PostUpdateDto;
 import com.example.board.dto.RecommendationDto;
@@ -46,6 +47,13 @@ public class PostServiceImpl implements PostService {
         return savedEntity;
     }
 
+    /**
+     * Page<Member> list(Pageable pageable)
+     * /members?page=0&size=3&sort=id,desc&sort=username,desc
+     * page: 현재 페이지, 0부터 시작한다.
+     * size: 한 페이지에 노출할 데이터 건수
+     * sort: 정렬 조건을 정의한다. 예) 정렬 속성,정렬 속성...(ASC | DESC), 정렬 방향을 변경하고 싶으면 sort 파라미터 추가 ( asc 생략 가능)
+     */
     @Override
     public Page<PostEntity> getPostsInBoard(String boardId, int page, int size) {
 //        BoardEntity boardEntity = boardRepository.findById(boardId)

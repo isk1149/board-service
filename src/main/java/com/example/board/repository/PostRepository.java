@@ -25,7 +25,7 @@ public interface PostRepository extends JpaRepository<PostEntity, String>, PostR
     List<Object[]> findPostsForHome3(@Param("boardId") String boardId);
     List<PostEntity> findByWriterOrderByIdDesc(String writer);
 
-    @Modifying
+    @Modifying //(clearAutomatically = true)
     @Query("update PostEntity p set p.viewCount = p.viewCount + 1 where p.board.id = :boardId")
     int updateViewCount(@Param("boardId") String boardId);
 

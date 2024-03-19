@@ -53,7 +53,7 @@ public class PostController {
                                              @RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "3") int size) {
         Page<PostEntity> pageEntity = postService.getPostsInBoard(boardId, page, size);
-        Page<PostDto> pageDto = pageEntity.map((v) -> new PostDto(v));
+        Page<PostDto> pageDto = pageEntity.map(PostDto::new); //v -> new PostDto(v)
 //        List<PostDto> response = new ArrayList<>();
 //        entities.forEach(v -> response.add(new PostDto(v)));
         ResponseDto<Page<PostDto>> response = ResponseDto.<Page<PostDto>>builder().data(pageDto).build();
