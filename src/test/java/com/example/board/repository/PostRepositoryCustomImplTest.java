@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PostRepositoryImplTest {
+class PostRepositoryCustomImplTest {
 
     @Autowired
     PostRepository postRepository;

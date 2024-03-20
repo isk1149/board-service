@@ -6,13 +6,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
 
-import static com.example.board.entity.QPostEntity.postEntity;
-
-public class PostRepositoryImpl implements PostRepositoryCustom{
+public class PostRepositoryCustomImpl implements PostRepositoryCustom{
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public PostRepositoryImpl(EntityManager entityManager) {
+    public PostRepositoryCustomImpl(EntityManager entityManager) {
         jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
 
