@@ -10,8 +10,9 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, String> {
 
-    @Query("select b from BoardEntity b join fetch b.posts where b.id = :boardId")
-    BoardEntity findBoard(@Param("boardId") String boardId);
+    @Query("select distinct b from BoardEntity b join fetch b.posts where b.id = :boardId")
+    List<BoardEntity> findBoard(@Param("boardId") String boardId);
+    //BoardEntity findBoard(@Param("boardId") String boardId);
 
     List<BoardEntity> findFirst3ByOrderByCreatedDateTimeDesc();
     List<BoardEntity> findTop3By(Sort sort); //boardRepository.findTop3By(Sort.by("createdDateTime"));

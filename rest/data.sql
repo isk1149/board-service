@@ -96,12 +96,19 @@ insert into post(id, board_id, subject, content, writer, view_count, recommendat
 values ('3e4f5a02d44c45bbb31c1b4f052dcb5e', '9292264cc3aa410b96d14c7ea2b5f335', '커뮤니티게시글7', '커뮤니티게시글7의 내용입니다.'
        , 'tester', 8, 3, 'tester', current_timestamp);
 
+insert into comment(id, created_date_time, creator, updated_date_time, updater, comment, recommendation_count, writer, parent_comment_id, post_id)
+values ('3e4f5a02d44c45bbb31c1b4f052dcb51', current_timestamp, 'tester', current_timestamp, 'tester', '첫 번째 댓글', 0, 'tester', null, '1009742sddac4abcd9c3412d98b78457');
+
+insert into comment(id, created_date_time, creator, updated_date_time, updater, comment, recommendation_count, writer, parent_comment_id, post_id)
+values ('3e4f5a02d44c45bbb31c1b4f052dcb52', current_timestamp, 'tester', current_timestamp, 'tester', '두 번째 댓글', 0, 'tester', null, '1009742sddac4abcd9c3412d98b78457');
+
+insert into comment(id, created_date_time, creator, updated_date_time, updater, comment, recommendation_count, writer, parent_comment_id, post_id)
+values ('3e4f5a02d44c45bbb31c1b4f052dcb53', current_timestamp, 'tester', current_timestamp, 'tester', '첫 번째 댓글의 댓글', 0, 'tester', '3e4f5a02d44c45bbb31c1b4f052dcb51', null);
+
+insert into comment(id, created_date_time, creator, updated_date_time, updater, comment, recommendation_count, writer, parent_comment_id, post_id)
+values ('3e4f5a02d44c45bbb31c1b4f052dcb54', current_timestamp, 'tester', current_timestamp, 'tester', '첫 번째 댓글의 댓글2', 0, 'tester', '3e4f5a02d44c45bbb31c1b4f052dcb51', null);
 
 
-3e4f5a02d44c45bbb31c1b4f052dcb51
-3e4f5a02d44c45bbb31c1b4f052dcb52
-3e4f5a02d44c45bbb31c1b4f052dcb53
-3e4f5a02d44c45bbb31c1b4f052dcb54
 3e4f5a02d44c45bbb31c1b4f052dcb55
 
 

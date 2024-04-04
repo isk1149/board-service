@@ -2,6 +2,8 @@ package com.example.board.entity;
 
 import com.example.board.dto.PostUpdateDto;
 import io.micrometer.core.instrument.util.StringUtils;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -30,6 +32,7 @@ public class PostEntity extends BaseEntity {
 //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<AttachmentEntity> attachments = new ArrayList<>();
 
+    @Default
     @OneToMany(mappedBy = "post")
     private List<CommentEntity> comments = new ArrayList<>();
 

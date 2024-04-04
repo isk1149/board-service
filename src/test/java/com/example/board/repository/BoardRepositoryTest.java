@@ -25,11 +25,11 @@ class BoardRepositoryTest {
 
     @Test
     public void findBoard() {
-        BoardEntity board = boardRepository.findBoard("7b9a7c55a9334d049e8a880cf216e28e");
-        List<PostEntity> posts = board.getPosts();
-        for (PostEntity post : posts) {
-            System.out.println("post.getSubject() = " + post.getSubject());
-        }
+        List<BoardEntity> board = boardRepository.findBoard("7b9a7c55a9334d049e8a880cf216e28e");
+        System.out.println("board.size() = " + board.size());
+//        for (PostEntity post : posts) {
+//            System.out.println("post.getSubject() = " + post.getSubject());
+//        }
 
 //        List<BoardEntity> boards1 = boardRepository.findFirst3ByOrderByCreatedDateTimeDesc();
 //        for (BoardEntity boardEntity : boards1) {

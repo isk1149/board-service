@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,33 +49,47 @@ public class PostController {
         return ResponseEntity.ok().body(response);
     }
 
+//    @GetMapping("/boards/{boardId}/posts")
+//    public ResponseEntity<?> getPostsByBoard(@PathVariable String boardId,
+//                                             @RequestParam(defaultValue = "0") int page,
+//                                             @RequestParam(defaultValue = "3") int size) {
+//        Page<PostEntity> pageEntity = postService.getPostsByBoard(boardId, page, size);
+//        Page<PostDto> pageDto = pageEntity.map(PostDto::new); //v -> new PostDto(v)
+//        ResponseDto<Page<PostDto>> response = ResponseDto.<Page<PostDto>>builder().data(pageDto).build();
+//        return ResponseEntity.ok().body(response);
+//    }
+
+//    @GetMapping("/boards/{boardId}/posts")
+//    public ResponseEntity<?> getPostsByBoardUsingPageable(@PathVariable String boardId, Pageable pageable) {
+//        Page<PostEntity> pageEntity = postService.getPostsByBoardUsingPageable(boardId, pageable);
+//        Page<PostDto> pageDto = pageEntity.map(PostDto::new); //v -> new PostDto(v)
+//        ResponseDto<Page<PostDto>> response = ResponseDto.<Page<PostDto>>builder().data(pageDto).build();
+//        return ResponseEntity.ok().body(response);
+//    }
+
     @GetMapping("/boards/{boardId}/posts")
-    public ResponseEntity<?> getPostsInBoard(@PathVariable String boardId,
-                                             @RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "3") int size) {
-        Page<PostEntity> pageEntity = postService.getPostsInBoard(boardId, page, size);
-        Page<PostDto> pageDto = pageEntity.map(PostDto::new); //v -> new PostDto(v)
-//        List<PostDto> response = new ArrayList<>();
-//        entities.forEach(v -> response.add(new PostDto(v)));
-        ResponseDto<Page<PostDto>> response = ResponseDto.<Page<PostDto>>builder().data(pageDto).build();
+    public ResponseEntity<?> getPostsByBoardUsingQueryDslPageable(@PathVariable String boardId, Pageable pageable) {
+        Page<PostEntity> pageEntity = postService.getPostsByBoardUsingQueryDslPageable(boardId, pageable);
+        Page<PostHomeBoardDto> pageDto = pageEntity.map(PostHomeBoardDto::new); //v -> new PostDto(v)
+        ResponseDto<Page<PostHomeBoardDto>> response = ResponseDto.<Page<PostHomeBoardDto>>builder().data(pageDto).build();
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/boards/{boardId}/posts/home")
-    public ResponseEntity<?> getPostsForHome(@PathVariable String boardId) {
-        List<PostEntity> entities = postService.getPostsForHome(boardId);
-        List<PostDto> dtos = new ArrayList<>();
-        entities.forEach(v -> dtos.add(new PostDto(v)));
+    public ResponseEntity<?> getPostsByHome(@PathVariable String boardId) {
+        List<PostEntity> entities = postService.getPostsByHome(boardId);
+        List<PostHomeBoardDto> dtos = new ArrayList<>();
+        //entities.forEach(v -> dtos.add(new PostDto(v)));
+        entities.forEach(v -> dtos.add(new PostHomeBoardDto(v)));
 
-        ResponseDto<List<PostDto>> response = ResponseDto.<List<PostDto>>builder().data(dtos).build();
+        ResponseDto<List<PostHomeBoardDto>> response = ResponseDto.<List<PostHomeBoardDto>>builder().data(dtos).build();
         log.info("response={}",response.getData());
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<?> getPost(@PathVariable String postId) {
-        PostEntity entity = postService.getPost(postId);
-        PostDto dto = new PostDto(entity);
+        PostDto dto = postService.getPost(postId);
         ResponseDto<PostDto> response = ResponseDto.<PostDto>builder().data(dto).build();
         return ResponseEntity.ok().body(response);
     }

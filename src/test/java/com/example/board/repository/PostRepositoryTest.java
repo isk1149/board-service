@@ -1,10 +1,7 @@
 package com.example.board.repository;
 
 import com.example.board.dto.PostDto;
-import com.example.board.entity.BoardEntity;
 import com.example.board.entity.PostEntity;
-import com.example.board.entity.QBoardEntity;
-import com.example.board.entity.QPostEntity;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
@@ -30,7 +27,6 @@ import static com.example.board.entity.QPostEntity.*;
 @Transactional
 @Rollback(value = false)
 class PostRepositoryTest {
-
     @Autowired
     public PostRepository postRepository;
     @PersistenceContext
@@ -45,33 +41,21 @@ class PostRepositoryTest {
     @Test
     public void postsForHome() {
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdDateTime"));
-        List<PostEntity> postsForHome = postRepository.findPostsForHome("7b9a7c55a9334d049e8a880cf216e28e", pageRequest);
+        List<PostEntity> postsForHome = postRepository.findPostsByHome("7b9a7c55a9334d049e8a880cf216e28e", pageRequest);
 
         for (PostEntity postEntity : postsForHome)
             System.out.println("postEntity. = " + postEntity.getSubject());
 
     }
 
-    @Test
-    public void postsForHome2() {
-        List<PostEntity> postsForHome2 = postRepository.findPostsForHome2("7b9a7c55a9334d049e8a880cf216e28e");
-        for (PostEntity postEntity : postsForHome2) {
-            System.out.println("postEntity.getSubject() = " + postEntity.getSubject());
-            System.out.println("postEntity.getBoard().getBoardName() = " + postEntity.getBoard().getBoardName());
-        }
-    }
-
-    @Test
-    public void postsForHome3() {
-        List<Object[]> postsForHome3 = postRepository.findPostsForHome3("7b9a7c55a9334d049e8a880cf216e28e");
-        for (Object[] result : postsForHome3) {
-            PostEntity post = (PostEntity) result[0];
-            BoardEntity board = (BoardEntity) result[1];
-            // 여기서 name을 출력
-            System.out.println("post.getSubject() = " + post.getSubject());
-            System.out.println("post.getBoardName() = " + board.getBoardName());
-        }
-    }
+//    @Test
+//    public void postsForHome2() {
+//        List<PostEntity> postsForHome2 = postRepository.findPostsForHome2("7b9a7c55a9334d049e8a880cf216e28e");
+//        for (PostEntity postEntity : postsForHome2) {
+//            System.out.println("postEntity.getSubject() = " + postEntity.getSubject());
+//            System.out.println("postEntity.getBoard().getBoardName() = " + postEntity.getBoard().getBoardName());
+//        }
+//    }
 
     @Test
     public void bulkUpdateViewCount() {
@@ -82,7 +66,7 @@ class PostRepositoryTest {
     @Test
     public void findPosts() {
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createdDateTime"));
-        Page<PostEntity> page = postRepository.findPostsByPaging("7b9a7c55a9334d049e8a880cf216e28e", pageRequest);
+        Page<PostEntity> page = postRepository.findPostsByPageable("7b9a7c55a9334d049e8a880cf216e28e", pageRequest);
         Page<PostDto> map = page.map((v) -> new PostDto(v));
         System.out.println("map = " + map.getContent());
         System.out.println("map.getTotalElements() = " + map.getTotalElements());

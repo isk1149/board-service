@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,36 +48,51 @@ public class PostServiceImpl implements PostService {
         return savedEntity;
     }
 
+
+    public Page<PostEntity> getPostsByBoard(String boardId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDateTime"));
+        Page<PostEntity> pageEntity = postRepository.findPostsByPageable(boardId, pageRequest);
+        return pageEntity;
+    }
+
     /**
      * Page<Member> list(Pageable pageable)
+     * /members?page=0&size=3&sort=createdDateTime,desc
      * /members?page=0&size=3&sort=id,desc&sort=username,desc
      * page: 현재 페이지, 0부터 시작한다.
      * size: 한 페이지에 노출할 데이터 건수
-     * sort: 정렬 조건을 정의한다. 예) 정렬 속성,정렬 속성...(ASC | DESC), 정렬 방향을 변경하고 싶으면 sort 파라미터 추가 ( asc 생략 가능)
      */
     @Override
-    public Page<PostEntity> getPostsInBoard(String boardId, int page, int size) {
-//        BoardEntity boardEntity = boardRepository.findById(boardId)
-//                .orElseThrow(() -> new EntityNotFoundException("Board not found with id: " + boardId));
-        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDateTime"));
-        Page<PostEntity> pageEntity = postRepository.findPostsByPaging(boardId, pageRequest);
+    public Page<PostEntity> getPostsByBoardUsingPageable(String boardId, Pageable pageable) {
+        Page<PostEntity> pageEntity = postRepository.findPostsByPageable(boardId, pageable);
         return pageEntity;
     }
 
     @Override
-    public List<PostEntity> getPostsForHome(String boardId) {
+    public Page<PostEntity> getPostsByBoardUsingQueryDslPageable(String boardId, Pageable pageable) {
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        Page<PostEntity> pageEntity = postRepository.findPostsByBoardUsingQueryDsl(boardId, pageRequest);
+        return pageEntity;
+    }
+
+    @Override
+    public List<PostEntity> getPostsByHome(String boardId) {
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdDateTime"));
-        List<PostEntity> entities = postRepository.findPostsForHome(boardId, pageRequest);
+        //SpringDataJpa
+        //List<PostEntity> entities = postRepository.findPostsByHome(boardId, pageRequest);
+        //QueryDsl
+        List<PostEntity> entities = postRepository.findPostsByHomeUsingQueryDsl(boardId);
         return entities;
     }
 
     @Transactional
     @Override
-    public PostEntity getPost(String postId) {
-        PostEntity entity = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
+    public PostDto getPost(String postId) {
+//        PostEntity entity = postRepository.findById(postId)
+//                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
+        PostEntity entity = postRepository.findPostUsingQueryDsl1(postId);
         entity.increaseViewCount();
-        return entity;
+        return new PostDto(entity);
     }
 
 //    /**

@@ -1,7 +1,9 @@
 package com.example.board.entity;
 
 import lombok.*;
+import lombok.Builder.Default;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -32,10 +34,11 @@ public class CommentEntity extends BaseEntity {
 
     private Long recommendationCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_COMMENT_ID", referencedColumnName = "ID")
     private CommentEntity parentComment;
 
+    @Default
     @OneToMany(mappedBy = "parentComment")
     List<CommentEntity> childrenComment = new ArrayList<>();
 

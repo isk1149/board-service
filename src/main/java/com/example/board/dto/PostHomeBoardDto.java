@@ -1,19 +1,18 @@
 package com.example.board.dto;
 
-import com.example.board.entity.BoardEntity;
 import com.example.board.entity.PostEntity;
-import com.example.board.entity.CommentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * home화면에 post내용을 전달할 dto
+ */
 @Getter @Setter
 @ToString
-public class PostDto {
+public class PostHomeBoardDto {
     private String id;
 //    private String boardId;
 //    private String boardName;
@@ -23,14 +22,13 @@ public class PostDto {
     private String content;
     private Long viewCount;
     private Long recommendationCount;
-    private List<CommentDto> comments;
     private int commentCount;
     private String creator;
     private LocalDateTime createdDateTime;
     private String updater;
     private LocalDateTime updatedDateTime;
 
-    public PostDto(final PostEntity postEntity) {
+    public PostHomeBoardDto(final PostEntity postEntity) {
         this.id = postEntity.getId();
 //        this.boardId = postEntity.getBoard().getId();
 //        this.boardName = postEntity.getBoard().getBoardName();
@@ -39,10 +37,8 @@ public class PostDto {
         this.content = postEntity.getContent();
         this.viewCount = postEntity.getViewCount();
         this.recommendationCount = postEntity.getRecommendationCount();
-        if (postEntity.getComments() != null) {
+        if (postEntity.getComments() != null)
             this.commentCount = postEntity.getComments().size();
-            this.comments = commentEntitiesToDtos(postEntity.getComments());
-        }
         this.creator = postEntity.getCreator();
         this.createdDateTime = postEntity.getCreatedDateTime();
         this.updater = postEntity.getUpdater();
@@ -53,11 +49,11 @@ public class PostDto {
 //        return new BoardDto(boardEntity);
 //    }
 //
-    private List<CommentDto> commentEntitiesToDtos(final List<CommentEntity> entities) {
-         List<CommentDto> dtos = new ArrayList<>();
-        if (entities != null) {
-            entities.forEach(v -> dtos.add(new CommentDto(v)));
-        }
-        return dtos;
-    }
+//    private List<CommentDto> commentEntitiesToDtos(final List<CommentEntity> entities) {
+//         List<CommentDto> dtos = new ArrayList<>();
+//        if (entities != null) {
+//            entities.forEach(v -> dtos.add(new CommentDto(v)));
+//        }
+//        return dtos;
+//    }
 }

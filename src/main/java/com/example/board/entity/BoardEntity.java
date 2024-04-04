@@ -2,6 +2,8 @@ package com.example.board.entity;
 
 import com.example.board.dto.BoardUpdateDto;
 import io.micrometer.core.instrument.util.StringUtils;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -22,6 +24,7 @@ public class BoardEntity extends BaseEntity {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
+    @Default
     @OneToMany(mappedBy = "board")
     private List<PostEntity> posts = new ArrayList<>();
 
